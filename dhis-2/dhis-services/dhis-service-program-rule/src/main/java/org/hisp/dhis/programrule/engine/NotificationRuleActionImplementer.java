@@ -35,21 +35,21 @@ import org.hisp.dhis.notification.logging.NotificationLoggingService;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.notification.ProgramNotificationInstance;
 import org.hisp.dhis.program.notification.ProgramNotificationTemplate;
 import org.hisp.dhis.program.notification.ProgramNotificationTemplateStore;
 import org.hisp.dhis.rules.models.RuleAction;
 import org.hisp.dhis.rules.models.RuleActionScheduleMessage;
 import org.hisp.dhis.rules.models.RuleActionSendMessage;
 import org.hisp.dhis.rules.models.RuleEffect;
-import org.hisp.dhis.util.DateUtils;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Zubair Asghar.
  */
 @Slf4j
+@AllArgsConstructor
 abstract class NotificationRuleActionImplementer implements RuleActionImplementer
 {
     // -------------------------------------------------------------------------
@@ -64,18 +64,7 @@ abstract class NotificationRuleActionImplementer implements RuleActionImplemente
 
     protected final ProgramStageInstanceService programStageInstanceService;
 
-    public NotificationRuleActionImplementer( ProgramNotificationTemplateStore programNotificationTemplateStore,
-          NotificationLoggingService notificationLoggingService,
-          ProgramInstanceService programInstanceService,
-          ProgramStageInstanceService programStageInstanceService )
-    {
-        this.programNotificationTemplateStore = programNotificationTemplateStore;
-        this.notificationLoggingService = notificationLoggingService;
-        this.programInstanceService = programInstanceService;
-        this.programStageInstanceService = programStageInstanceService;
-    }
-
-    protected ExternalNotificationLogEntry createLogEntry(String key, String templateUid )
+    protected ExternalNotificationLogEntry createLogEntry( String key, String templateUid )
     {
         ExternalNotificationLogEntry entry = new ExternalNotificationLogEntry();
         entry.setLastSentAt( new Date() );
@@ -107,17 +96,6 @@ abstract class NotificationRuleActionImplementer implements RuleActionImplemente
     protected String generateKey( ProgramNotificationTemplate template, ProgramInstance programInstance )
     {
         return template.getUid() + programInstance.getUid();
-    }
-
-    protected ProgramNotificationInstance createNotificationInstance( ProgramNotificationTemplate template, String date )
-    {
-        ProgramNotificationInstance notificationInstance = new ProgramNotificationInstance();
-        notificationInstance.setAutoFields();
-        notificationInstance.setName( template.getName() );
-        notificationInstance.setScheduledAt(  DateUtils.parseDate( date ) );
-        notificationInstance.setProgramNotificationTemplate( template );
-
-        return notificationInstance;
     }
 
     protected boolean validate( RuleEffect ruleEffect, ProgramInstance programInstance )

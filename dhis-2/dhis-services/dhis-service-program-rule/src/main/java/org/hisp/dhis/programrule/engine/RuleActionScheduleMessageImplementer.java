@@ -28,6 +28,8 @@ package org.hisp.dhis.programrule.engine;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import static org.hisp.dhis.util.NotificationUtils.createNotificationInstance;
+
 import org.hisp.dhis.common.IdentifiableObjectStore;
 import org.hisp.dhis.notification.logging.ExternalNotificationLogEntry;
 import org.hisp.dhis.notification.logging.NotificationLoggingService;
@@ -62,12 +64,13 @@ public class RuleActionScheduleMessageImplementer extends NotificationRuleAction
     private final IdentifiableObjectStore<ProgramNotificationInstance> programNotificationInstanceStore;
 
     public RuleActionScheduleMessageImplementer( ProgramNotificationTemplateStore programNotificationTemplateStore,
-         NotificationLoggingService notificationLoggingService,
-         ProgramInstanceService programInstanceService,
-         ProgramStageInstanceService programStageInstanceService,
-         @Qualifier( "org.hisp.dhis.program.notification.ProgramNotificationInstanceStore" )IdentifiableObjectStore<ProgramNotificationInstance> programNotificationInstanceStore )
+        NotificationLoggingService notificationLoggingService,
+        ProgramInstanceService programInstanceService,
+        ProgramStageInstanceService programStageInstanceService,
+        @Qualifier( "org.hisp.dhis.program.notification.ProgramNotificationInstanceStore" ) IdentifiableObjectStore<ProgramNotificationInstance> programNotificationInstanceStore )
     {
-        super(programNotificationTemplateStore, notificationLoggingService, programInstanceService, programStageInstanceService);
+        super( programNotificationTemplateStore, notificationLoggingService, programInstanceService,
+            programStageInstanceService );
         this.programNotificationInstanceStore = programNotificationInstanceStore;
     }
 
